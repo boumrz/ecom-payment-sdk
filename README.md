@@ -1,46 +1,44 @@
 # ```Raiffeisen Payment Page Sdk```
 
-JS библиотека для работы с формой оплаты Райффайзенбанка.
+JS библиотека для работы с [формой оплаты Райффайзенбанка](https://e-commerce.raiffeisen.ru/pay/demo.html).
 
 #  `Документация`
 
 * [Подключение библиотеки](#подключение-библиотеки)
-    * [Подключение библиотеки в React](#подключение-библиотеки-в-React)
-    * [Подключение библиотеки в html-файле](#подключение-библиотеки-в-html-файле)
+    * [В React](#в-react)
+    * [Импорт модуля](#импорт-модуля)
 * [Использование библиотеки](#использование-библиотеки)
-    * [Минимальные условия для запуска](#минимальные-условия-для-запуска)
-        * [Открытие формы оплаты в виде всплывающего окна](#открытие-формы-оплаты-в-виде-всплывающего-окна)
-        * [Открытие формы оплаты в новой вкладке](#открытие-формы-оплаты-в-новой-вкладке)
-        * [Открытие формы оплаты в той же вкладке](#открытие-формы-оплаты-в-той-же-вкладке)
-    * [Расширенные параметры для запуска](#расширенные-параметры-для-запуска)
-        * [Открытие в виде всплывающего окна](#открытие-в-виде-всплывающего-окна)
-        * [Открытие в новой вкладке](#открытие-в-новой-вкладке)
-        * [Открытие в той же вкладке](#открытие-в-той-же-вкладке)
+    * [Простые сценарии](#простые-сценарии)
+        * [Форма оплаты в всплывающем окне](#форма-оплаты-в-всплывающем-окне)
+        * [Форма оплаты в новой вкладке](#форма-оплаты-в-новой-вкладке)
+        * [Форма оплаты в той же вкладке](#форма-оплаты-в-той-же-вкладке)
+    * [Расширенные сценарии](#расширенные-сценарии)
+        * [Пример открытия во всплывающем окне с необязательными параметрами](#пример-открытия-во-всплывающем-окне-с-необязательными-параметрами)
+        * [Пример открытия в новой вкладке с необязательными параметрами](#пример-открытия-в-новой-вкладке-с-необязательными-параметрами)
+        * [Пример открытия в той же вкладке с необязательными параметрами](#пример-открытия-в-той-же-вкладке-с-необязательными-параметрами)
 * [Дополнительно](#дополнительно)
-    * [Подключение стилей в React](#подключение-стилей-в-React)
-    * [Подключение стилей в html-файле](#подключение-стилей-в-html-файле)
+    * [Подключение библиотеки скриптом](#подключение-библиотеки-скриптом)
+    * [Подключение стилей](#подключение-стилей)
 
 ## `Подключение библиотеки`
 
-#### В React
-
-```
-import PaymentPageSdk from '@raiffeisen-ecom/payment-sdk';
-```
-
 #### Скриптом
 
-для рабочего проекта подключите минимифицированный скрипт:
+Для рабочего проекта подключите скрипт:
 
 ```
 <script src="https://e-commerce.raiffeisen.ru/pay/sdk/payment.styled.min.js"></script>
 ```
 
-для расширенной работы с кодом подключите обычный скрипт:
+или
+
+#### Импорт модуля
 
 ```
-<script src="https://e-commerce.raiffeisen.ru/pay/sdk/payment.styled.js"></script>
+import PaymentPageSdk from '@raiffeisen-ecom/payment-sdk';
 ```
+
+Расширенные возможности расположены в разделе [дополнительно](#дополнительно)
 
 ## `Использование библиотеки`
 
@@ -54,41 +52,40 @@ import PaymentPageSdk from '@raiffeisen-ecom/payment-sdk';
 * amount (Amount) - стоимость товара;
 
 #### Форма оплаты в всплывающем окне
+
 Для отслеживания успешности оплаты метод openPopup возвращает Promise, 
 позволяющий подписаться на успешную оплату или закрытие окна.
 
 ```
-const paymentPage = new PaymentPageSdk('000001680211111-80211111');
+const paymentPage = new PaymentPageSdk('000001680211111-80211111'); //publicId
 
 paymentPage.openPopup({amount: 10.10})
         .then(resolve => {
-                        console.log(resolve, "Спасибо");
+                        //console.log(resolve, "Спасибо");
                     })
         .catch(() => {
-                        console.log("Неудача");
+                        //console.log("Неудача");
                     });
 );
 ```
 
 #### Форма оплаты в новой вкладке
-Для методов openWindow и replace отслеживание успешности реализуется
-через необязательные параметры successUrl и failUrl.
  
 ```
-const paymentPage = new PaymentPageSdk('000001680211111-80211111');
+const paymentPage = new PaymentPageSdk('000001680211111-80211111'); //publicId
 
 paymentPage.openWindow({amount: 10.10});
 ```
 
-#### форма оплаты в той же вкладке:
+#### Форма оплаты в той же вкладке
 
 ```
-const paymentPage = new PaymentPageSdk('000001680211111-80211111');
+const paymentPage = new PaymentPageSdk('000001680211111-80211111'); //publicId
 
 paymentPage.replace({amount: 10.10});
 ```
 
-### `Расширенные сценарии:`
+### `Расширенные сценарии`
 
 Обязательные параметры:
 
@@ -98,94 +95,137 @@ paymentPage.replace({amount: 10.10});
 Необязательные параметры:
 
 * orderId (String) - номер заказа;
-* extra (String) - любые данные, которые продавец хочет получить при вызове колбэка;
-* receipt (String) - параметр, который позволяет зарегистрировать чек покупки;
-* style (String) - продавцу предоставляется возможность самому изменить стилизацию страницы;
+* extra (String) - любые данные, которые можно получить при вызове колбэка;
+* style (String) - стилизация страницы;
 * successUrl (String) - ссылка, на которую перейдёт покупатель, в случае успешной оплаты. 
-Поддерживается только для openWindow или redirect; 
+Поддерживается только для openWindow или replace; 
 * failUrl (String) - ссылка, на которую перейдёт покупатель, в случае неудачной оплаты.
-Поддерживается только для openWindow или redirect;
+Поддерживается только для openWindow или replace;
 * comment (String) - описание товара, который приобретает покупатель.
+
+Параметры для стилизации формы передаются отдельно в объект style:
+
+* button - кнопка
+    * backgroundColor - цвет фона
+    * textColor - цвет текста
+    * hoverTextColor - цвет текста при наведении
+    * hoverBackgroundColor - цвет фона при наведении
+    * borderRadius - радиус
+* header - шапка формы
+    * logo - ссылка на логотип
+    * titlePlace - расположение
+
+Логотип может выводиться в двух вариантах:
+
+* Узкий: 60x40;
+* Широкий: 340x40.
 
 #### Пример открытия во всплывающем окне с необязательными параметрами
 
 ```
-const paymentPage = new PaymentPageSdk('000001680211111-80211111');
+const paymentPage = new PaymentPageSdk('000001680211111-80211111'); //publicId
  
 paymentPage.openPopup({
                         amount: 10.10,
                         orderId: '91700',
                         extra: 'test@test.ru',                      
-                        receipt: '{"check": "check"}',
                         style: {
-                            "button": {
-                            "backgroundColor": "#ffc800"
+                            button: {
+                                backgroundColor: '#ffc800',
+                                textColor: '#542595',
+                                hoverTextColor: '#ffc800',
+                                hoverBackgroundColor: '#542595',
+                                borderRadius: '3px'
+                            },
+                            header: {
+                                logo: 'http://t1.gstatic.com/images?q=tbn:ANd9GcRHyucFf66c6YZGyErymx67X_VSzI_WX5xsLwJbJ9wyJxY3Cz1P',
+                                titlePlace: 'right'
+                            }                    
                         },
                         comment: 'Тирольский пирог с яблоками, грушами, ветчиной, сыром, ананасами, 50см'
                     })
         .then(resolve => {
-                        console.log(resolve, "Спасибо");
+                        //console.log(resolve, "Спасибо");
                     })
         .catch(() => {
-                        console.log("Неудача");
+                        //console.log("Неудача");
                     });
 );
 ```
 
 #### Пример открытия в новой вкладке с необязательными параметрами
 
-Для методов openWindow и replace отслеживание успешности реализуется через
-необязательные параметры successUrl и failUrl.
+В openWindow передаются необязательные параметры для возврата пользователя на страницу,
+в зависимости от результата оплаты: successUrl и failUrl.
+
 
 ```
-const paymentPage = new PaymentPageSdk('000001680211111-80211111');
+const paymentPage = new PaymentPageSdk('000001680211111-80211111'); //publicId
 
 paymentPage.openWindow({
                         amount: 10.10,
                         orderId: '91700',
                         extra: 'test@test.ru',                      
-                        receipt: '{"check": "check"}',
-                        style: '{
-                            "button": {
-                            "backgroundColor": "#ffc800"
-                        }',
+                        style: {
+                            button: {
+                                backgroundColor: '#ffc800',
+                                textColor: '#542595',
+                                hoverTextColor: '#ffc800',
+                                hoverBackgroundColor: '#542595',
+                                borderRadius: '3px'
+                            },
+                            header: {
+                                logo: 'http://t1.gstatic.com/images?q=tbn:ANd9GcRHyucFf66c6YZGyErymx67X_VSzI_WX5xsLwJbJ9wyJxY3Cz1P',
+                                titlePlace: 'right'
+                            }                    
+                        },
                         successUrl: 'https://www.raiffeisen.ru',
-                        failUrl: 'https://online.raiffeisen.ru/#/login/main',
+                        failUrl: 'https://e-commerce.raiffeisen.ru/pay/demo.html',
                         comment: 'Тирольский пирог с яблоками, грушами, ветчиной, сыром, ананасами, 50см'
                     });
 ```
 
-#### Открытие в той же вкладке:
- 
-То же самое, что и `открытие в новой вкладке`, 
+#### Пример открытия в той же вкладке с необязательными параметрами
+
+То же самое, что и [открытие в новой вкладке](#пример-открытия-в-новой-вкладке-с-необязательными-параметрами), 
 только необходимо использовать метод `paymentPage.replace()` 
 
 ## `Дополнительно`
 
-#### Подключение стилей в React:
+### Подключение библиотеки скриптом
 
-подключение стилей напрямую:
-
-```
-import '@raiffeisen-ecom/payment-sdk/lib-style/index.css';
-```
-
-подключение стилей, которые зашиты в js-файл:
+Для расширенной работы с кодом подключите обычный скрипт:
 
 ```
-import PaymentPageSdk from '@raiffeisen-ecom/payment-sdk/lib-style';
+<script src="https://e-commerce.raiffeisen.ru/pay/sdk/payment.styled.js"></script>
 ```
 
-#### Подключение стилей в html-файле:
+### Подключение стилей
+
+#### Скриптом
  
-подключение стилей напрямую:
+Подключение стилей напрямую:
 
 ```
 <link rel="stylesheet" href="https://e-commerce.raiffeisen.ru/pay/sdk/payment.min.css">
 ```
  
-подключение стилей, которые зашиты в js-файл:
+Подключение стилей, которые зашиты в js-файл:
 
 ```
 <script src="https://e-commerce.raiffeisen.ru/pay/sdk/payment.min.js"></script>
+```
+
+#### Импорт модуля
+
+Подключение стилей напрямую:
+
+```
+import '@raiffeisen-ecom/payment-sdk/lib-style/index.css';
+```
+
+Подключение стилей, которые зашиты в js-файл:
+
+```
+import PaymentPageSdk from '@raiffeisen-ecom/payment-sdk/lib-style';
 ```
