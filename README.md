@@ -32,7 +32,7 @@ JS библиотека для работы с [формой оплаты Рай
 
 или
 
-#### Импорт модуля
+#### В React
 
 ```
 import PaymentPageSdk from '@raiffeisen-ecom/payment-sdk';
@@ -96,29 +96,34 @@ paymentPage.replace({amount: 10.10});
 
 * orderId (String) - номер заказа;
 * extra (String) - любые данные, которые можно получить при вызове колбэка;
-* style (String) - стилизация страницы;
 * successUrl (String) - ссылка, на которую перейдёт покупатель, в случае успешной оплаты. 
 Поддерживается только для openWindow или replace; 
 * failUrl (String) - ссылка, на которую перейдёт покупатель, в случае неудачной оплаты.
 Поддерживается только для openWindow или replace;
 * comment (String) - описание товара, который приобретает покупатель.
 
-Параметры для стилизации формы передаются отдельно в объект style:
+Дополнительно можно стилизовать страницу, это достигается путём добавления параметра `style`:
 
-* button - кнопка
-    * backgroundColor - цвет фона
-    * textColor - цвет текста
-    * hoverTextColor - цвет текста при наведении
-    * hoverBackgroundColor - цвет фона при наведении
-    * borderRadius - радиус
-* header - шапка формы
-    * logo - ссылка на логотип
-    * titlePlace - расположение
+* style (Object)
+    * button - кнопка
+        * backgroundColor - цвет фона
+        * textColor - цвет текста
+        * hoverTextColor - цвет текста при наведении
+        * hoverBackgroundColor - цвет фона при наведении
+        * borderRadius - радиус
+    * header - шапка формы
+        * logo - ссылка на логотип
+        * titlePlace - расположение
 
 Логотип может выводиться в двух вариантах:
 
 * Узкий: 60x40;
 * Широкий: 340x40.
+
+Для titlePlace используются строгие параметры:
+
+* right;
+* bottom.
 
 #### Пример открытия во всплывающем окне с необязательными параметрами
 
@@ -138,7 +143,7 @@ paymentPage.openPopup({
                                 borderRadius: '3px'
                             },
                             header: {
-                                logo: 'http://t1.gstatic.com/images?q=tbn:ANd9GcRHyucFf66c6YZGyErymx67X_VSzI_WX5xsLwJbJ9wyJxY3Cz1P',
+                                logo: 'https://www.raiffeisen.ru/common/new/images/logo-raif.svg',
                                 titlePlace: 'right'
                             }                    
                         },
@@ -175,7 +180,7 @@ paymentPage.openWindow({
                                 borderRadius: '3px'
                             },
                             header: {
-                                logo: 'http://t1.gstatic.com/images?q=tbn:ANd9GcRHyucFf66c6YZGyErymx67X_VSzI_WX5xsLwJbJ9wyJxY3Cz1P',
+                                logo: 'https://www.raiffeisen.ru/common/new/images/logo-raif.svg',
                                 titlePlace: 'right'
                             }                    
                         },
@@ -194,13 +199,13 @@ paymentPage.openWindow({
 
 ### Подключение библиотеки скриптом
 
-Для расширенной работы с кодом подключите обычный скрипт:
+Не минифицированный скрипт со стилями внутри:
 
 ```
 <script src="https://e-commerce.raiffeisen.ru/pay/sdk/payment.styled.js"></script>
 ```
 
-### Подключение стилей
+### Раздельное подключение стилей отдельным файлом
 
 #### Скриптом
  
@@ -216,7 +221,7 @@ paymentPage.openWindow({
 <script src="https://e-commerce.raiffeisen.ru/pay/sdk/payment.min.js"></script>
 ```
 
-#### Импорт модуля
+#### В React
 
 Подключение стилей напрямую:
 
